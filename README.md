@@ -8,7 +8,11 @@
 A modern, performant news website leveraging Next.js App Router with Incremental Static Regeneration (ISR), Single Page Application (SPA) capabilities, and skeleton loading for optimal user experience.
 
 ## 📑 Table of Contents
+<<<<<<< HEAD
 1. [🚀 Key Features](#key-features)
+=======
+1. [🚀 Key Features](#-key-features)
+>>>>>>> 89be669 (Update README.md)
 2. [🛠️ Tech Stack](#-tech-stack)
 3. [📦 Installation](#-installation)
 4. [🔧 Core Implementation](#-core-implementation)
@@ -21,7 +25,11 @@ A modern, performant news website leveraging Next.js App Router with Incremental
 9. [📝 License](#-license)
 10. [📬 Contact](#-contact)
 
+<<<<<<< HEAD
 ## Key Features
+=======
+## 🚀 Key Features
+>>>>>>> 89be669 (Update README.md)
 
 - **Incremental Static Regeneration (ISR)**
   - Auto-regenerates static pages every 60 seconds
