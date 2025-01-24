@@ -1,6 +1,5 @@
 // @typescript-eslint/no-explicit-any
 import { Suspense } from 'react';
-import PaginatedNewsList from '@/components/PaginatedNewsList';
 import { fetchNews } from '../../lib/fetchNews';
 import Header from '@/components/Header';
 import SkeletonLoader from '@/components/SkeletonLoader';
