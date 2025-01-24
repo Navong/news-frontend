@@ -18,7 +18,7 @@ interface PaginatedNewsListProps {
 
 export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedNewsListProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewportWidth, setViewportWidth] = useState(0); // Track viewport width
+  const [viewportWidth, setViewportWidth] = useState(0);
 
   const totalPages = Math.ceil(articles.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -26,10 +26,7 @@ export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedN
   const currentArticles = articles.slice(startIndex, endIndex);
 
   useEffect(() => {
-    // Set initial viewport width
     setViewportWidth(window.innerWidth);
-
-    // Update viewport width on resize
     const handleResize = () => setViewportWidth(window.innerWidth);
 
     window.addEventListener('resize', handleResize);
@@ -38,7 +35,6 @@ export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedN
 
   const getPageNumbers = () => {
     const pages = [];
-    // Use viewportWidth instead of window.innerWidth
     const delta = viewportWidth < 640 ? 1 : 2;
 
     for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
@@ -62,38 +58,39 @@ export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedN
 
   return (
     <div className="space-y-8">
-      {/* Grid container with responsive columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {currentArticles.map((article, index) => (
           <article
             key={index}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col"
+            className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 flex flex-col group"
           >
-            {/* Image container with aspect ratio */}
+            {/* Image container with hover effect */}
             {article.urlToImage && (
-              <div className="relative w-full pt-[56.25%]">
+              <div className="relative w-full pt-[56.25%] overflow-hidden">
                 <Image
                   width={600}
                   height={400}
                   src={article.urlToImage}
                   alt={article.title}
-                  className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg"
+                  className="absolute top-0 left-0 w-full h-full object-cover rounded-t-lg 
+                             transition-transform duration-300 ease-in-out group-hover:scale-110"
                   unoptimized={!article.urlToImage?.includes('trusted-domain.com')}
                   priority
                 />
               </div>
             )}
 
-            {/* Content container */}
-            <div className="p-4 sm:p-6 flex flex-col flex-grow">
-              <h2 className="font-semibold text-base sm:text-lg mb-2 line-clamp-2 flex-grow text-black">
+            {/* Content container with subtle hover effect */}
+            <div className="p-4 sm:p-6 flex flex-col flex-grow transition-colors duration-300 ease-in-out group-hover:bg-gray-50/50">
+              <h2 className="font-semibold text-base sm:text-lg mb-2 line-clamp-2 flex-grow text-black 
+                             transition-colors duration-300 ease-in-out group-hover:text-indigo-700">
                 {article.title}
               </h2>
               <p className="text-sm text-gray-600 mb-4 line-clamp-3">
                 {article.description}
               </p>
 
-              {/* Footer section */}
+              {/* Footer section with hover interaction */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mt-auto pt-4 border-t border-gray-100">
                 <span className="text-xs text-gray-500 order-2 sm:order-1">
                   {new Date(article.publishedAt).toLocaleDateString()}
@@ -102,7 +99,8 @@ export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedN
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800 text-sm font-medium order-1 sm:order-2"
+                  className="text-indigo-600 hover:text-indigo-800 text-sm font-medium order-1 sm:order-2 
+                             transition-all duration-300 ease-in-out hover:translate-x-1"
                 >
                   Read More →
                 </a>
@@ -112,7 +110,7 @@ export default function PaginatedNewsList({ articles, itemsPerPage }: PaginatedN
         ))}
       </div>
 
-      {/* Responsive pagination controls */}
+      {/* Pagination controls remain the same */}
       <div className="flex flex-wrap justify-center items-center gap-2 mt-8 px-4">
         <button
           onClick={() => setCurrentPage(prev => prev - 1)}
