@@ -1,15 +1,15 @@
-// app/page.tsx
+'use client'
+
 import { Suspense } from 'react';
-import PaginatedNewsList from '@/components/PaginatedNewsList';
+import LoadMoreNewsList from '@/components/LoadMoreLists';
 import { fetchNews } from '../lib/fetchNews';
 import Header from '@/components/Header';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import { Article } from '@/type/article';
 
-
 export const revalidate = 60;
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 6;
 
 export default async function Home() {
     const newsPromise = fetchNews('general');
@@ -18,20 +18,17 @@ export default async function Home() {
         <main className="p-6">
             <Header category={"Top Headlines"} />
             <Suspense fallback={<SkeletonLoader />}>
-                {/* Wrap PaginatedNewsList in a dynamic wrapper to allow client-side rendering */}
-                <PaginatedNewsWrapper newsPromise={newsPromise} />
+                {/* Wrap LoadMoreNewsList in a dynamic wrapper to allow client-side rendering */}
+                <NewsWrapper newsPromise={newsPromise} />
             </Suspense>
         </main>
     );
 }
 
-// Client-side wrapper for PaginatedNewsList
 type NewsPromise = Promise<{ articles: Article[] }>;
 
-async function PaginatedNewsWrapper({ newsPromise }: { newsPromise: Promise<NewsPromise> }) {
-    const news = await newsPromise; // Resolve the promise to fetch news
+async function NewsWrapper({ newsPromise }: { newsPromise: NewsPromise }) {
+    const news = await newsPromise;
     const filteredArticles = news.articles.filter(article => article.urlToImage !== null);
-    return <PaginatedNewsList articles={filteredArticles} itemsPerPage={ITEMS_PER_PAGE} />;
+    return <LoadMoreNewsList articles={filteredArticles} itemsPerPage={ITEMS_PER_PAGE} />;
 }
-
-

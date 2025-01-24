@@ -5,6 +5,7 @@ import { fetchNews } from '../../lib/fetchNews';
 import Header from '@/components/Header';
 import SkeletonLoader from '@/components/SkeletonLoader';
 import { Article } from '@/type/article';
+import LoadMoreNewsList from '@/components/LoadMoreLists';
 
 export const revalidate = 60; // Revalidate every 60 seconds
 const ITEMS_PER_PAGE = 9;
@@ -21,7 +22,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             {/* Render the PaginatedNewsList with a loading fallback */}
             <Suspense fallback={<SkeletonLoader />}>
                 {/* Wrap PaginatedNewsList in a dynamic wrapper to allow client-side rendering */}
-                <PaginatedNewsWrapper newsPromise={newsPromise} />
+                <NewsWrapper newsPromise={newsPromise} />
             </Suspense>
         </main>
     );
@@ -31,8 +32,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
 type NewsPromise = Promise<{ articles: Article[] }>;
 
-async function PaginatedNewsWrapper({ newsPromise }: { newsPromise: Promise<NewsPromise> }) {
-    const news = await newsPromise; // Resolve the promise to fetch news
+async function NewsWrapper({ newsPromise }: { newsPromise: NewsPromise }) {
+    const news = await newsPromise;
     const filteredArticles = news.articles.filter(article => article.urlToImage !== null);
-    return <PaginatedNewsList articles={filteredArticles} itemsPerPage={ITEMS_PER_PAGE} />;
+    return <LoadMoreNewsList articles={filteredArticles} itemsPerPage={ITEMS_PER_PAGE} />;
 }
+
